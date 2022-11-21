@@ -1,1 +1,1 @@
-cmake -DPLATFORM = Linux
+cmake -DPLATFORM=Linux

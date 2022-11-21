@@ -1,3 +1,13 @@
 #include <cmath>
+#include <iostream>
+#include "platform.h"
 
-double mysqrt(double value);
+using namespace std;
+
+#ifdef LIN
+    #define EXPORT __attribute__((visibility("default")))
+#elif defined WIN
+    #define EXPORT __declspec(dllexport)
+#endif
+
+EXPORT double mysqrt(double value);
