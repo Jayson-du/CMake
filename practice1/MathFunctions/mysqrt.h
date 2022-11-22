@@ -10,4 +10,14 @@ using namespace std;
     #define EXPORT __declspec(dllexport)
 #endif
 
-EXPORT double mysqrt(double value);
+//EXPORT double mysqrt(double value);
+
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    EXPORT double mysqrt(double value);
+#ifdef __cplusplus
+}
+#endif
