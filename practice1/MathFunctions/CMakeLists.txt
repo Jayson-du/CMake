@@ -1,11 +1,10 @@
 # 通过从顶级CMakeLists.txt传递的${PLATFORM}, 判断当前平台
-if (PLATFORM STREQUAL "linux")
+if (PLATFORM STREQUAL "Linux")
     configure_file(
         "${CMAKE_CURRENT_SOURCE_DIR}/include/mysqrt_lin.conf"
         "${CMAKE_CURRENT_SOURCE_DIR}/include/platform.h"
     )
-
-else()
+elseif (PLATFORM STREQUAL "Windows")
     configure_file(
         "${CMAKE_CURRENT_SOURCE_DIR}/include/mysqrt_win.conf"
         "${CMAKE_CURRENT_SOURCE_DIR}/include/platform.h"
@@ -31,9 +30,7 @@ file(GLOB_RECURSE SourceFile
      )
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SourceFile})
 
-message("In MathFunctions HeaderFile is ${HeaderFile}")
-message("In MathFunctions SourceFile is ${SourceFile}")
-
+# 添加文件分类
 add_library(MathFunctions SHARED
             ${HeaderFile}
             ${SourceFile}
