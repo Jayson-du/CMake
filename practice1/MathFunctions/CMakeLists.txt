@@ -1,18 +1,40 @@
-message("PLATFORM is ${PLATFORM}")
-
-if (${PLATFORM} STREQUAL "linux")
+# 通过从顶级CMakeLists.txt传递的${PLATFORM}, 判断当前平台
+if (PLATFORM STREQUAL "linux")
     configure_file(
-        "${PROJECT_SOURCE_DIR}/MathFunctions/mysqrt_lin.conf"
-        "${PROJECT_BINARY_DIR}/MathFunctions/platform.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/mysqrt_lin.conf"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/platform.h"
     )
 
-elseif(PLATFORM STREQUAL "Windows")
+else()
     configure_file(
-        "${PROJECT_SOURCE_DIR}/MathFunctions/mysqrt_win.conf"
-        "${PROJECT_BINARY_DIR}/MathFunctions/platform.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/mysqrt_win.conf"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/platform.h"
         )
 endif()
 
+# 在WIndows下开启项目组织
+option(USE_SOLUTION_FOLDERS  ON)
 
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-add_library(MathFunctions SHARED mysqrt.cpp)
+# 通过CMake内置的file函数将.h文件与.cpp文件分离,
+# ${CMAKE_CURRENT_SOURCE_DIR}为当前目录
+# 递归查找当前项目include下的所有.h文件
+file(GLOB_RECURSE HeaderFile
+     "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
+     )
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${HeaderFile})
+
+# 递归查找当前项目source目录下所有.cpp文件
+file(GLOB_RECURSE SourceFile
+     "${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp"
+     )
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SourceFile})
+
+message("In MathFunctions HeaderFile is ${HeaderFile}")
+message("In MathFunctions SourceFile is ${SourceFile}")
+
+add_library(MathFunctions SHARED
+            ${HeaderFile}
+            ${SourceFile}
+            )
