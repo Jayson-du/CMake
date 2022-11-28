@@ -40,8 +40,6 @@ if (USE_MYMATH)
     set(EXTRA_LIB ${EXTRA_LIB} MathFunctions)
 endif(USE_MYMATH)
 
-# 当前项目依赖子项目, 所以需要添加连接路径
-target_link_libraries(Tutorial ${EXTRA_LIB})
 
 # 指定依赖库的地址
 LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/MathFunctions/Debug/)
@@ -49,3 +47,5 @@ LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/MathFunctions/Debug/)
 # 主项目依赖的文件
 add_executable(Tutorial tutorial.cpp)
 
+# 当前项目依赖子项目, 所以需要添加连接路径
+target_link_libraries(Tutorial ${EXTRA_LIB})
