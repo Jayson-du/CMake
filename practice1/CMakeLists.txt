@@ -37,12 +37,42 @@ if (USE_MYMATH)
     set(EXTRA_LIB ${EXTRA_LIB} MathFunctions)
 endif(USE_MYMATH)
 
+if (PLATFORM STREQUAL "Windows")
+    # Windows下是指当前启动项目
+    set_property (DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME} )
+endif()
 
 # 指定依赖库的地址
-LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/MathFunctions/Debug/)
+LINK_DIRECTORIES(${PROJECT_SOURCE_DIR})
 
 # 主项目依赖的文件
 add_executable(Tutorial tutorial.cpp)
 
 # 当前项目依赖子项目, 所以需要添加连接路径
 target_link_libraries(Tutorial ${EXTRA_LIB})
+
+
+# 创建第三方依赖头文件目录
+make_directory("${PROJECT_BINARY_DIR}/ThirdHeader")
+# 遍历查找第三方库函数头文件
+file(GLOB_RECURSE ThirdHeaderFile
+     "${PROJECT_BINARY_DIR}/resource/library/${PLATFORM}/*.h"
+     )
+# 拷贝到指定目录
+message("ThirdHeaderFile is ${ThirdHeaderFile}")
+message("ThirdHeaderFilePath is ${PROJECT_BINARY_DIR}/ThirdHeader")
+
+file(COPY "${ThirdHeaderFile}" DESTINATION  "${PROJECT_BINARY_DIR}/ThirdHeader")
+
+
+
+# 拷贝第三方依赖库,
+# 1、遍历寻找*.dll文件
+file(GLOB_RECURSE ThirdLibFile
+     "${PROJECT_BINARY_DIR}/resource/library/${PLATFORM}/*.dll"
+     )
+# 2、POST_BUILD: 编译结束后执行自定义命令拷贝
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${ThirdLibFile}" "${PROJECT_BINARY_DIR}/${CMAKE_CONFIGURATION_TYPES}"
+)
+
