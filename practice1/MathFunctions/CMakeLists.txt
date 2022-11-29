@@ -11,7 +11,7 @@ elseif (PLATFORM STREQUAL "Windows")
         )
 endif()
 
-# 在WIndows下开启项目组织
+# 在Windows下开启项目组织
 option(USE_SOLUTION_FOLDERS  ON)
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
@@ -29,6 +29,12 @@ file(GLOB_RECURSE SourceFile
      "${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp"
      )
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SourceFile})
+
+# 设置动态库输出路径
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+# 设置静态库输出路径
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 
 # 添加文件分类
 add_library(MathFunctions SHARED

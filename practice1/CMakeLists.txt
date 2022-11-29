@@ -8,9 +8,6 @@ elseif(PLATFORM STREQUAL "Windows")
     add_definitions(-DWIN)
 endif()
 
-# 设置一个变量
-# set(Tutorial_VERSION_MAJOR 1)
-
 configure_file(
     "${PROJECT_SOURCE_DIR}/Tutorial.conf"
     "${PROJECT_BINARY_DIR}/Tutorial.h"
