@@ -56,12 +56,9 @@ target_link_libraries(Tutorial ${EXTRA_LIB})
 make_directory("${PROJECT_BINARY_DIR}/ThirdHeader")
 # 遍历查找第三方库函数头文件
 file(GLOB_RECURSE ThirdHeaderFile
-     "${PROJECT_BINARY_DIR}/resource/library/${PLATFORM}/*.h"
+     "${PROJECT_BINARY_DIR}/resource/HeaderFile/*.h"
      )
 # 拷贝到指定目录
-message("ThirdHeaderFile is ${ThirdHeaderFile}")
-message("ThirdHeaderFilePath is ${PROJECT_BINARY_DIR}/ThirdHeader")
-
 file(COPY "${ThirdHeaderFile}" DESTINATION  "${PROJECT_BINARY_DIR}/ThirdHeader")
 
 
